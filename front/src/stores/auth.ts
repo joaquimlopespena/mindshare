@@ -28,6 +28,7 @@ interface AuthState {
     isAuthenticated: boolean
     login: (data: LoginInput) => Promise<boolean>
     signup: (data: RegisterInput) => Promise<boolean>
+    logout: () => void
 }
 
 export const useAuthStore = create<AuthState>() (
@@ -45,6 +46,7 @@ export const useAuthStore = create<AuthState>() (
                     })
                     if (data?.login) {
                         const { token, user } = data.login as LoginMutationData['login']
+                        localStorage.setItem('token', token)
                         set({
                             user: {
                                 id: user.id,
@@ -81,6 +83,7 @@ export const useAuthStore = create<AuthState>() (
 
                     if (data?.register) {
                         const { token, user } = data.register as RegisterMutationData['register']
+                        localStorage.setItem('token', token)
                         set({
                             user: {
                               id: user.id,
@@ -101,9 +104,18 @@ export const useAuthStore = create<AuthState>() (
                     console.error('Erro ao registrar usuário:', error)
                     return false
                 }
+            },
+            logout: () => {
+                localStorage.removeItem('token')
+                set({ user: null, token: null, isAuthenticated: false })
             }
         }), {
             name: "auth",
-            storage: createJSONStorage(() => localStorage)
+            storage: createJSONStorage(() => localStorage),
+            onRehydrateStorage: () => (state) => {
+                if (state?.token) {
+                    localStorage.setItem('token', state.token)
+                }
+            }
         })
     )

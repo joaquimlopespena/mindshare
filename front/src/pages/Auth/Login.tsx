@@ -5,14 +5,32 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
+import { useAuthStore } from "@/stores/auth"
+import { toast } from "sonner"
 
 export const Login = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    
-    const handleSubmit = () => {
-        console.log(email, password)
+    const login = useAuthStore((state) => state.login)
+    const [loading, setLoading] = useState(false)
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+
+        try {
+            const loginMutation = await login({ email, password })
+            if (loginMutation) {
+                toast.success("Login realizado com sucesso")
+            } else {
+                toast.error("Email ou senha inválidos")
+            }
+        } catch {
+            toast.error("Erro ao fazer login")
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -37,8 +55,8 @@ export const Login = () => {
                             <Label htmlFor="password">Senha</Label>
                             <Input id="password" type="password" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </div>
-                        <Button type="submit" className="w-full"  >
-                            Entrar
+                        <Button type="submit" className="w-full" disabled={loading}>
+                            {loading ? "Entrando…" : "Entrar"}
                         </Button>
                     </form>
                 </CardContent>

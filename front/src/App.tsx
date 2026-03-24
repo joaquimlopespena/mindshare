@@ -3,7 +3,7 @@ import { Login } from './pages/Auth/Login'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Signup } from './pages/Auth/Signup'
 import { useAuthStore } from './stores/auth'
-import { Ideas } from './pages/ideias'
+import { Ideias } from './pages/ideias'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuthStore()
@@ -38,7 +38,7 @@ function App() {
         } />
         <Route path="/" element={
           <ProtectedRoute>
-            <Ideas />
+            <Ideias />
           </ProtectedRoute>
         } />
       </Routes>

@@ -20,7 +20,7 @@ export interface LoginInput {
     password: string
 }
 
-export interface Idea {
+export interface Ideia {
     id: string
     title: string
     description?: string | null

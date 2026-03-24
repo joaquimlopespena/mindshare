@@ -4,13 +4,13 @@ import { Label } from "@/components/ui/label"
 import { PlusIcon } from "lucide-react"
 import { CreateIdeiaDialog } from "./components/CreateIdeiaDialog"
 import { useState } from "react"
-import type { Idea } from "@/types"
+import type { Ideia } from "@/types"
 
 
-export const Ideas = () => {
+export const Ideias = () => {
     const [open, setOpen] = useState(false)
     
-    function handleSuccess( idea: Idea ) {
+    function handleSuccess( idea: Ideia ) {
         console.log(idea)
         setOpen(false)
     }
